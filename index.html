@@ -3,85 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat con ChatGPT</title>
-    <style>
-        #chatContainer {
-            width: 100%;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
-        #chatBox {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: white;
-            border-radius: 5px;
-            max-height: 300px;
-        }
-        #userInput {
-            width: 80%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-        button {
-            width: 18%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-    </style>
+    <title>Chat Widget OpenAI</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="chatContainer">
-        <div id="chatBox"></div>
-        <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
-        <button onclick="sendMessage()">Enviar</button>
+    <!-- Contenedor principal del widget -->
+    <div id="chat-widget">
+        <div id="chat-header">
+            <h3>Asistente</h3>
+            <button id="close-btn">X</button>
+        </div>
+        <div id="chat-container">
+            <!-- Aquí aparecerán los mensajes -->
+        </div>
+        <input type="text" id="user-input" placeholder="Escribe tu mensaje..." />
+        <button id="send-btn">Enviar</button>
     </div>
 
-    <script>
-        // Función para enviar el mensaje
-        function sendMessage() {
-            const userMessage = document.getElementById('userInput').value;
-            if (userMessage.trim() === "") return;
-
-            // Mostrar el mensaje del usuario en el chat
-            const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML += "<div><b>Yo:</b> " + userMessage + "</div>";
-
-            // Limpiar el campo de entrada
-            document.getElementById('userInput').value = "";
-
-            // Hacer la llamada a la API de OpenAI
-            fetch('https://api.openai.com/v1/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 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'
-                },
-                body: JSON.stringify({
-                    model: "gpt-4o",  // o el modelo que estés usando
-                    prompt: userMessage,
-                    max_tokens: 550,
-                    temperature: 0.7
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const botMessage = data.choices[0].text.trim();
-                chatBox.innerHTML += "<div><b>ChatGPT:</b> " + botMessage + "</div>";
-                chatBox.scrollTop = chatBox.scrollHeight;  // Para hacer scroll hacia abajo
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
